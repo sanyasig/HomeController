@@ -21,6 +21,7 @@ CLIENT_SECRET_FILE = 'credentials.json'
 APPLICATION_NAME = 'Google Calendar API Python Quickstart'
 
 def get_home_controller_events():
+    week_from_day = datetime.datetime.now() + datetime.timedelta(days=7)
     store = file.Storage('token.json')
     creds = store.get()
     if not creds or creds.invalid:
@@ -40,14 +41,21 @@ def get_home_controller_events():
         print('No upcoming events found.')
     msg_events = []
     for event in events:
-        start = event['start'].get('dateTime', event['start'].get('date'))
-        title = event['summary']
-        if ":" in title:
-            event_details = title.split(':')
-            event_details.append(start)
-            msg_events.append(":".join(event_details))
-
+        try:
+            start = event['start'].get('dateTime', event['start'].get('date'))
+            if ('T' in start):
+                start = start.split('T')[0]
+            print (start)
+            event_date = datetime.datetime.strptime(start, '%Y-%m-%d')
+            if event_date < week_from_day:
+                title = event['summary']
+                if ":" in title:
+                    event_details = title.split(':')
+                    event_details.append(event_date.strftime('%a') +"  "+ event_date.strftime('%d') + " - " +event_date.strftime('%b'))
+                    msg_events.append(":".join(event_details))
+        except ValueError:
+            print ("ERROR OCCURED")
+            
     print (msg_events)
     MQTT_MSG = json.dumps({"name":"|".join(msg_events)})
     mqtt_publish.send("home/calendar/events",MQTT_MSG)
-    return None
