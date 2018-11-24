@@ -4,7 +4,7 @@ import configparser
 import  os
 
 from services.rmBroadLinkService import RMBroadLInk
-import ahlogger
+import logging
 
 
 def getService(topic):
@@ -21,7 +21,7 @@ def getService(topic):
 
 def read_config():
     config = configparser.ConfigParser()
-    ahlogger.log((config.sections()))
+    logging.info((config.sections()))
     config.read(os.path.expanduser('~') + '/work/alexa_settings.ini')
     return config
 
@@ -46,7 +46,7 @@ def get_config(type):
 #         client.connect(hostname, port=port, username=username, password=password)
 #
 #         stdin, stdout, stderr = client.exec_command(command)
-#         ahlogger.log stdout.read(),
+#         logging.info stdout.read(),
 #
 #     finally:
 #         client.close()

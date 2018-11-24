@@ -2,7 +2,7 @@ import broadlink
 import time
 
 from services.parent_service import ParentService
-import ahlogger
+import logging
 
 class RMBroadLInk(ParentService):
 
@@ -15,10 +15,10 @@ class RMBroadLInk(ParentService):
         if len(split_message) > 1:
             if (split_message[1] == "tv"):
                 if split_message[2] == "on":
-                    ahlogger.log("turing on TV")
+                    logging.info("turing on TV")
                     return_fuction = self.toggle_power
                 else:
-                    ahlogger.log("turing off youtube")
+                    logging.info("turing off youtube")
                     return_fuction = self.toggle_power
 
         return return_fuction
@@ -47,10 +47,10 @@ class RMBroadLInk(ParentService):
 
     def _connect_if_rm(self):
         device = broadlink.rm(host=(self.ip, 80), mac=bytearray.fromhex("34ea344298bf"))
-        ahlogger.log("Connecting to Broadlink device....")
+        logging.info("Connecting to Broadlink device....")
         device.auth()
         time.sleep(1)
-        ahlogger.log("Connected....")
+        logging.info("Connected....")
         time.sleep(1)
         device.host
         return device

@@ -7,3 +7,15 @@ cd /home/nanipi/work/AlexaHome
 
 nohup python alexa-home.py>alexa-home.log 2>&1&
 #nohup python alexa-home.py &
+
+
+
+
+
+
+
+
+
+
+
+

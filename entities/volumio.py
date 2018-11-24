@@ -1,6 +1,6 @@
 import json
 import requests
-import ahlogger
+import logging
 
 def playlist(topic=None, details=None):
     ip = None
@@ -10,9 +10,8 @@ def playlist(topic=None, details=None):
     name = all_details.get('playlist')
 
     url = "http://" +str(ip) + "/api/v1/commands/?cmd=playplaylist&name=" + str(name)
-    ahlogger.log(url)
+    logging.info(url)
     r = requests.get(url)
-    ahlogger.log(r.status_code)
+    logging.info(r.status_code)
 
-
-    ahlogger.log("")
+    logging.info("")

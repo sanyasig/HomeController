@@ -1,6 +1,6 @@
 from services.parent_service import ParentService
 from . import Utils
-import ahlogger
+import logging
 
 class Home_PC(ParentService):
 
@@ -15,6 +15,9 @@ class Home_PC(ParentService):
     def get_function(self, message=None):
 
         split_message = message.split("_")
+        split_message = message.split("_")
+        split_message = message.split("_")
+        split_message = message.split("_")
         return_fuction = None
 
         if len(split_message) > 1:
@@ -26,5 +29,5 @@ class Home_PC(ParentService):
 
     def shutdown(self):
         output = Utils.execute_remote_command(self.ip, self.username, self.password, self.shutdown_cmd)
-        ahlogger.log(output)
+        logging.info(output)
 

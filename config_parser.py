@@ -1,14 +1,14 @@
 import configparser
 import  os
 
-import ahlogger
+import logging
 
 config = 0;
 
 def read_config():
     config = configparser.ConfigParser()
     config.read(os.path.expanduser('~') + '/home_settings.ini')
-    ahlogger.log(config.sections())
+    logging.info(config.sections())
     return config
 
 

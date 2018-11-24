@@ -9,27 +9,27 @@ import subprocess
 
 from urllib3.util import request
 
-import ahlogger
+import logging
 
 
 def download_title(title):
 
-    ahlogger.log("get actual name")
+    logging.info("get actual name")
     # get torrent file
     details = send_http_requuest("https://api.themoviedb.org/3/search/movie?api_key=&query="+title, 0, 0)
     title = details['results'][0]['title']
     year =  details['results'][0]['release_date'].split('-')[0]
-    ahlogger.log(title + " " + year)
+    logging.info(title + " " + year)
     t_magent = getSkyTorrentMagent(title, year)
     tc = transmissionrpc.Client('192.168.0.17', port=9091, user='nani', password='nanipi')
     tc.add_torrent(t_magent)
-    ahlogger.log(tc.get_torrents())
+    logging.info(tc.get_torrents())
 
     # need to get the torrents link
     return "adding title " + title + "to transmissions"
 
 def send_http_requuest(url , params, type):
-    ahlogger.log("sending http request")
+    logging.info("sending http request")
 
     r = requests.get(url)
     if(r.status_code == 200):
@@ -41,7 +41,7 @@ def getSkyTorrentMagent(title, year):
     base_url = "https://www.skytorrents.in"
     q_string = urllib.parse.urlencode({ 'q' : title + ' ' + year})
     url = str(base_url) + "/search/all/ed/1/?l=en-us&" + q_string
-    ahlogger.log(url)
+    logging.info(url)
     r = requests.get(url)
     soup = BeautifulSoup(r.text, "lxml")
     for tag in soup.find_all("td"):
@@ -63,7 +63,7 @@ def get_telugu_list():
         if (isinstance(tag, Tag) & ('class' in tag.attrs)):
             if('wp-caption-text' in tag.attrs['class']):
                 test = tag.contents[0]
-                ahlogger.log(test.replace("(Telugu)", "").strip())
+                logging.info(test.replace("(Telugu)", "").strip())
 
 def clear_youttube_playlist():
         test_key = "AIzaSyC9H0Gl5cbgX_vniQ39D0ABFiN4xf8to8Y"
@@ -82,7 +82,7 @@ def send_download_request(i):
     p = subprocess.Popen('ssh -t nani@192.168.0.22 python /home/nani/work/getYoutube_playlist.py', shell=True,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     for line in p.stdout.readlines():
-        ahlogger.log(line, end=' ')
+        logging.info(line, end=' ')
     retval = p.wait()
 
 
