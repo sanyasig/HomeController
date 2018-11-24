@@ -150,10 +150,6 @@ switch:
     payload_on: "ON"
     payload_off: "OFF"
 
-google:
-  client_id: 43231823746-52pq2tubmp450lqku190ih1vsqbgjah0.apps.googleusercontent.com
-  client_secret: gzXME69z0vVhU30CyUGotXIj
-
 sensor:
   - platform: mqtt
     name: events
