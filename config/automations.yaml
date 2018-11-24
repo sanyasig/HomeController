@@ -1,0 +1,12 @@
+- id: '1541962910804'
+  alias: New Automation
+  trigger:
+  - entity_id: light.tv_audio
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: light.home_music
+    service: light.turn_off

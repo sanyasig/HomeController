@@ -1,6 +1,6 @@
 import logging
 
-from entities import alerts, dash, audio, ifttt, firetv, tv, volumio
+from entities import alerts, dash, audio, ifttt, firetv, tv, volumio, trigger
 
 def process_message(topic=None, message=None):
  # TODO: need to fix the dynamic loading of modules
@@ -8,30 +8,19 @@ def process_message(topic=None, message=None):
         logging.info("topic: " + topic)
         logging.info("status " + str(message))
 
-        services = {"ifttt":ifttt,
+        services = {
+                    "ifttt":ifttt,
                     'firetv':firetv,
                     "dash":dash,
                     'volumio': volumio,
                     'alerts':alerts,
                     'audio':audio,
-                    'tv':tv
+                    'tv':tv,
+                    'trigger': trigger
                     }
         intent = topic.split('/')[1]
         module = services[intent]
-        #
-        # if ("ifttt" in topic):
-        #     module = ifttt
-        # if ("firetv" in topic):
-        #     module = firetv
-        # if ("dash" in topic):
-        #     module = dash
-        # if ("volumio" in topic):
-        #     module = volumio
-        # if ("alerts" in topic):
-        #     module = alerts
-        # if ("" in topic):
-#            module = audio
-
+        logging.info("calling module " + str(module))
         func = getattr(module, topic.split("/")[2])
         func(topic, message)
 

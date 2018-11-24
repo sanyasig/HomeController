@@ -1,0 +1,266 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 55.898514
+  longitude: -4.328141
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 0
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Europe/London
+  customize: !include customize.yaml
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+group: 
+##Views  
+  living_room_view: 
+    view: yes
+    name: Living Room
+    entities:
+      - group.livingroom_tv_group
+      - group.media_group
+      - group.lights_group
+      - group.climate_group
+  music_view: 
+    view: yes
+    name: Music
+    entities:
+      - group.music_group  
+
+
+##GROUPS
+  music_group:
+    name: Music
+    entities:
+      - media_player.plex
+  livingroom_tv_group:
+    name: Living ROOM TV
+    entities:
+      - script.livingroom_tv 
+  lights_group:
+    name: Lights
+    entities:
+      - light.kitchen
+      - light.bed_room
+  media_group:
+    name: Media
+    entities:
+      - script.fire_tv
+      - script.kodi
+      - script.you_tube
+      - light.tv_audio
+      - light.home_music
+      - script.livingroom_tv
+
+  climate_group:
+    name: Climate
+    entities:
+      - sensor.met_office_feels_like_temperature 
+      - sensor.met_office_temperature
+      - sensor.met_office_weather 
+
+light:
+  - platform: lifx
+  - platform: mqtt  
+    name: "TV NEW"
+    state_topic: "home/tv/itself/192.168.0.17"
+    command_topic: "home/tv/itself/192.168.0.17"
+    payload_on: "ON"
+    payload_off: "OFF"
+  - platform: mqtt  
+    name: "TV"
+    state_topic: "home/tv/itself/192.168.0.17"
+    command_topic: "home/tv/itself/192.168.0.17"
+    payload_on: "ON"
+    payload_off: "OFF"
+  - platform: mqtt  
+    name: "FAN"
+    state_topic: "home/ifttt/trigger"
+    command_topic: "home/ifttt/trigger"
+    payload_on: "socket1-on"
+    payload_off: "socket1-off"
+  - platform: mqtt  
+    name: "Tv audio"
+    state_topic: "home/audio/tv_audio/192.168.0.17"
+    command_topic: "home/audio/tv_audio/192.168.0.17"
+    payload_on: "ON"
+    payload_off: "OFF"
+  - platform: mqtt  
+    name: "Home Music"
+    state_topic: "home/audio/bt_audio/192.168.0.17"
+    command_topic: "home/audio/bt_audio/192.168.0.17"
+    payload_on: "ON"
+    payload_off: "OFF"    
+
+script: 
+  # Turns on the bedroom lights and then the living room lights 1 minute later
+  livingroom_tv:
+    alias: TV
+    sequence:
+      - alias: Living Room TV
+        service: light.toggle
+        data:
+          entity_id: light.tv
+  fire_tv:
+    alias: FIRE TV
+    sequence:
+      - alias: Fire TV reboot
+        service: switch.toggle
+        data:
+          entity_id: switch.fire_tv
+  kodi_tv:
+    alias: KODI
+    sequence:
+      - alias: KODI on FIRE TV
+        service: switch.toggle
+        data:
+          entity_id: switch.kodi
+  youtube_tv:
+    alias: YOUTUBE
+    sequence:
+      - alias: YOUTUBE on FIRE TV
+        service: switch.toggle
+        data:
+          entity_id: switch.you_tube                    
+
+switch:
+  - platform: mqtt
+    name: "Fire TV"
+    state_topic: "home/firetv/restart/192.168.0.10"
+    command_topic: "home/firetv/restart/192.168.0.10"
+    payload_on: "ON"
+    payload_off: "OFF" 
+  - platform: mqtt
+    name: "KODI"
+    state_topic: "home/firetv/kodi"
+    command_topic: "home/firetv/kodi"
+    payload_on: "ON"
+    payload_off: "OFF"  
+  - platform: mqtt
+    name: "You Tube"
+    state_topic: "home/firetv/youtube"
+    command_topic: "home/firetv/youtube"
+    payload_on: "ON"
+    payload_off: "OFF"
+
+google:
+  client_id: 43231823746-52pq2tubmp450lqku190ih1vsqbgjah0.apps.googleusercontent.com
+  client_secret: gzXME69z0vVhU30CyUGotXIj
+
+sensor:
+  - platform: mqtt
+    name: events
+    value_template: "{{ value_json.name }}"
+    state_topic: "home/calendar/events"
+    json_attributes:
+      - Date
+ 
+  - platform: transmission
+    host: 127.0.0.1
+    username: nani
+    password: nanipi
+    monitored_variables:
+      - 'current_status'
+      - 'download_speed'
+      - 'upload_speed'
+      - 'active_torrents'
+
+  - platform: metoffice
+    api_key: f0a7d887-9b8c-4916-9624-ebf98118d944
+    monitored_conditions:
+      - weather
+      - temperature
+      - feels_like_temperature      
+  - platform: cpuspeed
+
+media_player:
+  - platform: plex
+    entity_namespace: 'plex'
+cloud:
+
+python_script:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  # api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  # base_url: example.duckdns.org:8123
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# Tracked history is kept for 10 days
+recorder:
+  purge_keep_days: 10
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Text to speech
+tts:
+  - platform: google
+
+mqtt:
+  broker: 192.168.0.14 
+  tls_version: '1.2'
+
+automation:
+  - alias: 'home_tv_audo_on'
+    trigger:
+      platform: state
+      entity_id: light.tv_audio
+      to: 'on'
+    action:
+      service: light.turn_off
+      entity_id:  light.home_music
+  - alias: 'home_tv_audo_off'
+    trigger:
+      platform: state
+      entity_id: light.home_music
+      to: 'on'
+    action:
+      service: light.turn_off
+      entity_id:  light.tv_audio
+    
+
+panel_iframe:  
+  music:  
+    title: 'Plex'  
+    icon: 'mdi:music-box-outline'  
+    url: 'http://192.168.0.14:32400/web/index.html'  
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: http://hassio.local:3218
+  terminal:
+    title: Terminal
+    icon: mdi:console
+    url: https://addres.to.your.hass.io:7681
