@@ -1,8 +1,10 @@
-from services import calendar_service
-from services.rmBroadLinkService import RMBroadLInk
+from services.firestrick_service import FireTv
 
 if __name__ == "__main__":
-   calendar  = calendar_service.get_home_controller_events()
+   a = FireTv()
+   a.start_youtube()
+   pass
+
   # services = RMBroadLInk(ip="192.168.0.17")
    #services.toggle_power()
   # services.clear_tracklist(

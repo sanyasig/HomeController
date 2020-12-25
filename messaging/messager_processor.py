@@ -26,12 +26,3 @@ def process_message(topic=None, message=None):
 
     except :
         logging.info("Cannto find service")
-
-    # service = Utils.getService(topic)
-    # execution = service.get_function(message)
-    # execution = service.get_function(message)
-    #
-    # if(execution != None):
-    #     result =  execution()
-
-

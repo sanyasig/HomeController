@@ -1,19 +1,44 @@
 import subprocess
 import time
-from multiprocessing import Pool, Process
+from services.HomeService import HomeService
 
-from services.parent_service import ParentService
+START_YOUTUBE = ""
 
 
-class FireStick(ParentService):
+class FireTv(HomeService):
+    def __init__(self):
+        firetv_config = self.get_config('firetv')
+        self.ip = firetv_config['ip']
+        self.port = firetv_config['port']
 
-    stop_kodi="adb shell am force-stop org.xbmc.kodi"
-    start_kodi="adb shell am start -n org.xbmc.kodi/.Splash"
-    start_youtube="adb shell am start -n org.chromium.youtube_apk/.YouTubeActivity"
-    stop_youtube="adb shell am force-stop org.chromium.youtube_apk"
+    def start_youtube(self):
+        self.run_intent(START_YOUTUBE)
 
-    def __init__(self, ip = None):
-        self.ip = ip
+    def run_intent(self, intent_str):
+       if self.check_connected():
+           self.run_bash_cmd(intent_str)
+
+
+    def check_connected(self, re_connect=True):
+        response = self.run_bash_cmd('adb devices')
+        if self.ip in response:
+            return True
+
+
+    def run_bash_cmd(self, command):
+        print ("here")
+        p1 = subprocess.Popen(command,  shell=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        response = str(p1.communicate())
+        return response
+
+
+    # stop_kodi="adb shell am force-stop org.xbmc.kodi"
+    # start_kodi="adb shell am start -n org.xbmc.kodi/.Splash"
+    # start_youtube="adb shell am start -n org.chromium.youtube_apk/.YouTubeActivity"
+    # stop_youtube="adb shell am force-stop org.chromium.youtube_apk"
+    #
+    # def __init__(self, ip = None):
+    #     self.ip = ip
 
     def get_function(self, message=None):
 
@@ -86,4 +111,5 @@ class FireStick(ParentService):
 
     def dissconnect(self):
         self.run_bash_command("adb kill-server")
+
 
