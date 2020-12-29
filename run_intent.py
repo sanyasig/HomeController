@@ -1,8 +1,9 @@
 from services.firestrick_service import FireTv
+from services.rmBroadLinkService import RMBroadLInk
 
 if __name__ == "__main__":
-   a = FireTv()
-   a.start_youtube()
+   a = RMBroadLInk()
+   a.toggle_power()
    pass
 
   # services = RMBroadLInk(ip="192.168.0.17")

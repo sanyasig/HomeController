@@ -3,6 +3,7 @@ import json
 import logging
 
 from services.firestrick_service import FireTv
+from services.rmBroadLinkService import RMBroadLInk
 
 
 class HomeMessager():
@@ -43,7 +44,8 @@ def process_message(topic=None, message=None):
         logging.info("status " + str(message))
 
         services = {
-            'firetv': FireTv()
+            'firetv': FireTv(),
+            'tv': RMBroadLInk(),
             }
         intent = topic.split('/')[1]
         module = services[intent]

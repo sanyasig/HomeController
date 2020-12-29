@@ -1,0 +1,38 @@
+{
+  "FAUXMO": {
+    "ip_address": "auto"
+  },
+  "PLUGINS": {
+    "RESTAPIPlugin": {
+      "path": "/home/nanihome/drive/work/fauxmo/fauxmo-plugins/restapiplugin.py",
+      "DEVICES": [
+        {
+          "port": 12341,
+          "on_cmd": "home/tv/toggle_power",
+          "off_cmd": "home/tv/toggle_power",
+          "on_data": {"isOn": 1},
+          "off_data": {"isOn": 0},
+          "user": "this",
+          "password": "that",
+          "method": "PUT",
+          "mqtt_server": "192.168.1.14",
+          "mqtt_port": 1883,
+          "name": "tv"
+        },
+        {
+          "port": 12341,
+          "on_cmd": "home/firetv/start_kodi",
+          "off_cmd": "home/fire/tv/kill_kodi",
+          "on_data": {"isOn": 1},
+          "off_data": {"isOn": 0},
+          "user": "this",
+          "password": "that",
+          "method": "PUT",
+          "mqtt_server": "192.168.1.14",
+          "mqtt_port": 1883,
+          "name": "tv"
+        }
+      ]
+    }
+  }
+}
