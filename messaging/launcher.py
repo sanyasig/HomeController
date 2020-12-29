@@ -40,8 +40,8 @@ def start_process(ip= None):
 def process_message(topic=None, message=None):
     # TODO: need to fix the dynamic loading of modules
     try:
-        logging.info("topic: " + topic)
-        logging.info("status " + str(message))
+        print("topic: " + topic)
+        print("status " + str(message))
 
         services = {
             'firetv': FireTv(),

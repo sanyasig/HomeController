@@ -1,21 +1,14 @@
 #!/bin/bash
+pkill -f homec_3_7
 
-ps aux | grep alexa-home.py | awk '{ahlogger.log $2}' | xargs kill
-
-cd /home/nanipi/work/AlexaHome
+#update git repo
+cd /home/nanihome/drive/work/HomeController
+/usr/bin/git stash
 /usr/bin/git pull
 
-nohup python alexa-home.py>alexa-home.log 2>&1&
-#nohup python alexa-home.py &
+# start fauxmo
+nohup /home/nanihome/anaconda3/envs/homec_3_7/bin/fauxmo  -c fauxmo/fauxmo_config.json -vv > fauxmo.log 2>&1&
 
-
-
-
-
-
-
-
-
-
-
+#home controller
+nohup /home/nanihome/anaconda3/envs/homec_3_7/bin/python3 start.py > home_controler.log 2>&1&
 
