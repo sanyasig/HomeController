@@ -1,5 +1,5 @@
 import datetime
-import config_parser
+from scripts import config_parser
 import json
 import requests
 import logging

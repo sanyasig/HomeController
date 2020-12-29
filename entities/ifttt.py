@@ -1,7 +1,7 @@
 import logging
 import requests
 
-import config_parser
+from scripts import config_parser
 
 
 def trigger(topic=None, details=None):
