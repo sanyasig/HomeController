@@ -22,7 +22,7 @@
         {
           "port": 12342,
           "on_cmd": "home/firetv/start_kodi",
-          "off_cmd": "home/firetv/tv/kill_kodi",
+          "off_cmd": "home/firetv/kill_kodi",
           "on_data": {"isOn": 1},
           "off_data": {"isOn": 0},
           "user": "this",

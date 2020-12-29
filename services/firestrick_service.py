@@ -16,9 +16,11 @@ class FireTv(HomeService):
         self.port = firetv_config['port']
 
     def start_kodi(self):
+        print("*START KODI*")
         self.run_intent(START_KODI)
 
     def kill_kodi(self):
+        print("*KILL KODI*")
         self.run_intent(STOP_KODI)
 
     def firerv_restart(self):

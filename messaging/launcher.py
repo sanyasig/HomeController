@@ -37,6 +37,7 @@ def start_process(ip= None):
     messager = HomeMessager(ip)
     messager.launch()
 
+
 def process_message(topic=None, message=None):
     # TODO: need to fix the dynamic loading of modules
     try:
