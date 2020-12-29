@@ -1,23 +1,22 @@
-from services.firestrick_service import FireStick
+from services.Utils import print_name
+from services.firestrick_service import FireTv
 from services.rmBroadLinkService import RMBroadLInk
-import time
-import  json
-import logging
 
-def kodi(topic=None, details=None):
-    ## turm on tv
-    RMBroadLInk().toggle_power()
-    time.sleep(10)
-    FireStick().turn_on_kodi()
-    logging.info("in tv platform")
 
-def youtube(topic=None, details=None):
-    ## turm on tv
-    RMBroadLInk().toggle_power()
-    time.sleep(10)
-    FireStick().turn_on_kodi()
-    logging.info("in tv platform")
-
+@print_name
 def itself(topic=None, details=None):
-    ip = str(topic).split("/")[-1]
-    RMBroadLInk(ip).toggle_power()
+    action = topic.split("/")[3]
+    if action == 'toggle_power':
+        RMBroadLInk().toggle_power()
+
+
+@print_name
+def firetv(topic=None, details=None):
+    action = topic.split("/")[3]
+    fire_tv_service = FireTv()
+    if action == "start_kodi":
+        fire_tv_service.start_kodi()
+    if action == "stop_kodi":
+        fire_tv_service.kill_kodi()
+    if action == "restart":
+        fire_tv_service.firerv_restart()

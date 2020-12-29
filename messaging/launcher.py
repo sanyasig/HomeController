@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import json
 import logging
 
+from messaging.messager_processor import process_message
 from services.firestrick_service import FireTv
 from services.rmBroadLinkService import RMBroadLInk
 
@@ -36,22 +37,3 @@ class HomeMessager():
 def start_process(ip= None):
     messager = HomeMessager(ip)
     messager.launch()
-
-
-def process_message(topic=None, message=None):
-    # TODO: need to fix the dynamic loading of modules
-    try:
-        print("topic: " + topic)
-        print("status " + str(message))
-
-        services = {
-            'firetv': FireTv(),
-            'tv': RMBroadLInk(),
-            }
-        intent = topic.split('/')[1]
-        module = services[intent]
-        logging.info("calling module " + str(module))
-        func = getattr(module, topic.split("/")[2])
-        func(topic, message)
-    except :
-        logging.info("cannot find service")

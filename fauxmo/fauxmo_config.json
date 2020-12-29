@@ -8,8 +8,8 @@
       "DEVICES": [
         {
           "port": 12341,
-          "on_cmd": "home/tv/toggle_power",
-          "off_cmd": "home/tv/toggle_power",
+          "on_cmd": "home/tv/itself/toggle_power",
+          "off_cmd": "home/tv/itself/toggle_power",
           "on_data": {"isOn": 1},
           "off_data": {"isOn": 0},
           "user": "this",
@@ -21,8 +21,8 @@
         },
         {
           "port": 12342,
-          "on_cmd": "home/firetv/start_kodi",
-          "off_cmd": "home/firetv/kill_kodi",
+          "on_cmd": "home/tv/firetv/start_kodi",
+          "off_cmd": "home/tv/firetv/stop_kodi",
           "on_data": {"isOn": 1},
           "off_data": {"isOn": 0},
           "user": "this",
